@@ -5,7 +5,7 @@ export class Start extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('background', 'assets/AIbanner.png' );
+        this.load.image('background', 'assets/banner.png' );
     }
 
     create() {

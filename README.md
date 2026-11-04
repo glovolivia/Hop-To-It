@@ -1,6 +1,6 @@
 # Hop-To-It! 🐸
 
-![Hop To It Banner](assets/AIbanner.png)
+![Hop To It Banner](assets/banner.png)
 
 A cute frog centered 2D platformer, made by ***The Frog Squad***
 

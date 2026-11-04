@@ -1,0 +1,47 @@
+//Helper function, creating buttons for UI, reused from Oliwia's Project 2 "Pony Panic"
+
+export function setupButton(scene, buttonImageTXT, buttonText, x, y, scale, normalTXT, pressedTXT, onClick, sound) {
+        const button = scene.add.image(x,y, normalTXT).setScale(scale);
+        const buttonY = button.y;
+        let overlay;
+
+        if (buttonImageTXT) {
+            overlay = scene.add.image(button.x, button.y-1, buttonImageTXT);
+            scene.textures.get(buttonImageTXT).setFilter(Phaser.Textures.FilterMode.NEAREST);
+        } else if (buttonText) {
+            overlay = scene.add.text(button.x, button.y - 2, buttonText, { fontSize: '64px', fill: '#FFF', align: "center", stroke: "#070706d9", strokeThickness: 3 }).setOrigin(0.5);
+        }
+
+        const overlayY = overlay.y;
+
+        button.setInteractive({cursor: 'auto'});
+
+        button.on('pointerout', () => {
+            button.setTexture(normalTXT);
+            overlay.y = overlayY;
+        });
+
+        button.on('pointerover', () => {
+            button.setTexture(pressedTXT);
+            overlay.y = overlayY + 1;
+        });
+
+        button.on('pointerdown', () => {
+            scene.sound.play(sound);
+            button.setTexture(pressedTXT);
+        });
+
+        button.on('pointerup', () => {
+            button.setTexture(normalTXT);
+            if(scene.scene.key == "Menu") {
+                scene.scene.stop('Start');
+            }
+            if(onClick == "Start") {
+                scene.scene.stop('Start');
+                scene.scene.start('Start', {isDemo: false});
+            }
+            scene.scene.start(onClick);
+        });
+
+        return [button, overlay];
+}

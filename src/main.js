@@ -1,4 +1,9 @@
 import { Start } from './scenes/Start.js';
+import { JesseLVL } from './scenes/Jesse_LVL.js';
+import { OliviaLVL } from './scenes/Olivia_LVL.js';
+import { WyattLVL } from './scenes/Wyatt_LVL.js';
+import { Credits } from './scenes/Credits.js';
+import { Controls } from './scenes/Controls.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -10,7 +15,7 @@ const config = {
     backgroundColor: '#000000',
     pixelArt: false,
     scene: [
-        Start
+        Start, WyattLVL, OliviaLVL, JesseLVL, Credits, Controls
     ],
     scale: {
         mode: Phaser.Scale.FIT,

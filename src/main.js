@@ -12,6 +12,12 @@ const config = {
     parent: 'game-container',
     width: 1280,
     height: 720,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: true
+        }
+    },
     backgroundColor: '#000000',
     pixelArt: false,
     scene: [

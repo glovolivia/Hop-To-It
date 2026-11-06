@@ -5,14 +5,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.x = x;
         this.y = y;
         this.scene.physics.add.sprite(200, 200, "player")
-        this.scene.physics.add.collider(this, platforms)
+        this.scene.physics.add.collider(platforms, this)
         this.setBounce(0.2)
         this.setCollideWorldBounds(true)
 
 
         this.inWater = true
 
-
+        // Will be used later to adjust the juice of the player movement
         this.max_movement_speed = 500
         this.current_speed = 0
         this.movement_acceleration = 100
@@ -31,18 +31,20 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     update(){
+        const speed = 200
+
         if (this.inWater){
             if (this.up.isDown){
-                this.body.setVelocityY(-200);
+                this.body.setVelocityY(-speed);
             }
             if (this.down.isDown){
-                this.body.setVelocityY(200);
+                this.body.setVelocityY(speed);
             }
             if (this.right.isDown){
-                this.body.setVelocityX(200);
+                this.body.setVelocityX(speed);
             }
             if (this.left.isDown){
-                this.body.setVelocityX(-200)
+                this.body.setVelocityX(-speed)
             }
         }
 

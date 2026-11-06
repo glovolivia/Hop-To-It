@@ -1,13 +1,13 @@
 export class Player extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene, x, y, platforms) {
-        super(scene, x, y, 'player')
-        this.scene = scene;
-        this.x = x;
-        this.y = y;
-        this.scene.physics.add.sprite(200, 200, "player")
-        this.scene.physics.add.collider(platforms, this)
-        this.setBounce(0.2)
-        this.setCollideWorldBounds(true)
+    constructor(scene, x, y) {
+        super(scene, x, y, 'player');
+		scene.add.existing(this);
+		scene.physics.add.existing(this);
+
+		this.setBounce(0.2);
+		this.setCollideWorldBounds(true);
+
+		this.inWater = true;
 
 
         this.inWater = true

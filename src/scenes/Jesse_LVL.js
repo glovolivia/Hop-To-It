@@ -7,19 +7,29 @@ export class JesseLVL extends Phaser.Scene {
     }
 
     preload() {
-        this.load.tilemapTiledJSON('level', "assets/TileMaps/TileMapOliv.tmj")
-        this.load.image("tileset", "assets/tilesheet.png") //need to know which png used exactly
+        this.load.tilemapTiledJSON('level', 'assets/TileMaps/TileMapOliv.tmj')
+        this.load.image('tilesBackgrounds', 'assets/TileMaps/TileSetsPNG/spritesheet-backgrounds-default.png');
+        this.load.image('tilesDouble', 'assets/TileMaps/TileSetsPNG/spritesheet-tiles-double.png');
+        this.load.image('tilesNormal', 'assets/TileMaps/TileSetsPNG/tiles_spritesheet.png');
         this.load.image('background', 'assets/banner.png' );
         this.load.image("player", 'assets/Graphics/frog_idle.png');
     }
 
     create() {
-        const MAP_KEY = (64, 64, 100, 100) // tile_height, tile_width, num_of_tiles_X, num_of_tiles_Y
-        const TILESET_KEY = (64, 64, 0, 1) // (tileWidth, tileHeight, tileMargin, tileSpacing, gid, tileOffset)
+        const map = this.make.tilemap({ key: 'level' });
+        const tilesets = [
+            map.addTilesetImage('TileSetBackgrounds', 'tilesBackgrounds'),
+            //map.addTilesetImage('NAME_OF_DOUBLE_TILESET', 'tilesDouble'),
+            map.addTilesetImage('TileSetNormal', 'tilesNormal'),
+        ];
 
-        var background = this.add.tilemap('tilemap', MAP_KEY);
-        var tileset = background.addTilesetImage("tileset", "tileset", TILESET_KEY)
-        this.platforms = background.createLayer("ground", tileset)
+        map.createLayer('Background', tilesets, 0, 0);
+        map.createLayer('Water', tilesets, 0, 0);
+        map.createLayer('PlatforDecorBehind', tilesets, 0, 0);
+        map.createLayer('PlatfromDecor', tilesets, 0, 0);
+        map.createLayer('Slides', tilesets, 0, 0);
+        this.platforms = map.createLayer('Platfrom', tilesets, 0, 0);
+        this.platforms.setCollisionByExclusion([-1]);
 
         this.player = new Player(100, 100, this.platforms) //(x, y, platform)
         this.player.setDepth(2);

@@ -9,9 +9,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
 		this.inWater = true;
 
-
-        this.inWater = true;
-
         // Will be used later to adjust the juice of the player movement
         this.max_movement_speed = 500
         this.current_speed = 0
@@ -20,6 +17,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.max_jump_height = 200
         this.current_jump_height = 0;
         this.jump_acceleration = 100;
+        
         if(this.inWater) {
             this.setDrag(450);
         } else {
@@ -46,7 +44,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             else if (this.down.isDown){
                 this.setAccelerationY(1000);
             }
-            else if (this.cursor.right.isDown || this.right.isDown){
+            if (this.cursor.right.isDown || this.right.isDown){
                 this.setAccelerationX(1000);
             }
             else if (this.cursor.left.isDown || this.left.isDown){

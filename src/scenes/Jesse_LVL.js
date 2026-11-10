@@ -19,7 +19,7 @@ export class JesseLVL extends Phaser.Scene {
         const map = this.make.tilemap({ key: 'level' });
         const tileSets = [
             map.addTilesetImage('TileSetBackgrounds', 'tilesBackgrounds'),
-            //map.addTilesetImage('NAME_OF_DOUBLE_TILESET', 'tilesDouble'),
+            map.addTilesetImage('spritesheet-tiles-double', 'tilesDouble'),
             map.addTilesetImage('TileSetNormal', 'tilesNormal'),
         ];
 
@@ -29,9 +29,10 @@ export class JesseLVL extends Phaser.Scene {
         map.createLayer('PlatformDecor', tileSets, 0, 0);
         map.createLayer('Slides', tileSets, 0, 0);
         this.platforms = map.createLayer('Platform', tileSets, 0, 0);
-        this.platforms.setCollisionByExclusion([-2]);
+        this.platforms.setCollisionByExclusion([-1]);
 
-        this.player = new Player(this, 16*64, 20 *64,) //(x, y, platform) deleted this.platforms {error, player takes scene, x, y}
+        this.player = new Player(this, 16*64, 20 *64,)
+        this.physics.add.collider(this.player, this.platforms);
         this.player.setScale(0.5);
         this.player.setDepth(2);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);

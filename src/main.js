@@ -19,7 +19,7 @@ const config = {
         }
     },
     backgroundColor: '#000000',
-    pixelArt: false,
+    pixelArt: true,
     scene: [
         Start, WyattLVL, OliviaLVL, JesseLVL, Credits, Controls
     ],

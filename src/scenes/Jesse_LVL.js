@@ -38,6 +38,7 @@ export class JesseLVL extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBackgroundColor('#ccccff'); 
+        this.cameras.main.setRoundPixels(true);
     }
 
     update() {

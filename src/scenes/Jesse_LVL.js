@@ -31,7 +31,7 @@ export class JesseLVL extends Phaser.Scene {
         this.platforms = map.createLayer('Platform', tileSets, 0, 0);
         this.platforms.setCollisionByExclusion([-1]);
 
-        this.player = new Player(this, 16*64, 20 *64,)
+        this.player = new Player(this, 460, 1120) //(this, 16*64, 20 *64,)
         this.physics.add.collider(this.player, this.platforms);
         this.player.setScale(0.5);
         this.player.setDepth(2);
@@ -42,8 +42,8 @@ export class JesseLVL extends Phaser.Scene {
         this.cameras.main.setRoundPixels(true);
     }
 
-    update() {
-        this.player.update();
+    update(time, delta) {
+        this.player.update(time, delta);
     }
     
 }

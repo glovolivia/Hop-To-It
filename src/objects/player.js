@@ -34,43 +34,57 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     update(time, delta){
+        if (this.body.velocity.x > 0){
+            this.setFlipX(true)
+
+        }
+        else if (this.body.velocity.x < 0){
+            this.setFlipX(false)
+        }
+
         const onGround = this.body.blocked.down;
+
         const dt = delta / 1000;
         this.setAcceleration(0, 0);
 
         if (this.jumping && onGround && this.body.velocity.y >= 0) {
             this.jumping = false;
             this.setDragX(700);
+            this.setBounce(0, 0);
         }
 
         if (!this.inWater){
-            if (this.cursor.right.isDown || this.right.isDown){
+            if (!this.jumping){
+                if (this.cursor.right.isDown || this.right.isDown){
+                this.setVelocityX(100)
                 this.setFlipX(true)
-            }
-            if (this.cursor.left.isDown || this.left.isDown){
-                this.setFlipX(false)
-            }
-            if (!this.jumping && this.jump.isDown){
-                this.jump_charge = Math.min(this.jump_charge + this.jump_charge_rate * dt, this.max_jump_strength)
-            }
-            if (!this.jumping && Phaser.Input.Keyboard.JustUp(this.jump)){
-                const power = Math.max(this.jump_charge, this.min_jump_strength);
-                const facing = this.flipX ? 1 : -1;
+                }
+                if (this.cursor.left.isDown || this.left.isDown){
+                    this.setVelocityX(-100)
+                    this.setFlipX(false)
+                }
+                if (this.jump.isDown){
+                    this.jump_charge = Math.min(this.jump_charge + this.jump_charge_rate * dt, this.max_jump_strength)
+                }
+                if (Phaser.Input.Keyboard.JustUp(this.jump)){
+                    const power = Math.max(this.jump_charge, this.min_jump_strength);
+                    const facing = this.flipX ? 1 : -1;
 
-				this.jumping = true;
-				this.setDrag(0, 0);
-				this.setVelocity(facing * power * 0.6, -power);
-				this.jump_charge = 0;
+                    this.jumping = true;
+                    this.setDrag(0, 0);
+                    this.setBounce(0.6, 0);
+                    this.setVelocity(facing * power * 0.6, -power);
+                    this.jump_charge = 0;
 
+                }
             }
-        }
-
-        if (this.jumping){
-            if (this.cursor.right.isDown || this.right.isDown){
-                this.setAccelerationX(200);
-            }
-            if (this.cursor.left.isDown || this.left.isDown){
-                this.setAccelerationX(-200)
+            if (this.jumping){
+                if (this.cursor.right.isDown || this.right.isDown){
+                    this.setAccelerationX(200);
+                }
+                if (this.cursor.left.isDown || this.left.isDown){
+                    this.setAccelerationX(-200)
+                }
             }
         }
 
@@ -83,15 +97,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             }
             if (this.cursor.right.isDown || this.right.isDown){
                 this.setAccelerationX(1000);
-                this.setFlipX(true)
             }
             else if (this.cursor.left.isDown || this.left.isDown){
                 this.setAccelerationX(-1000);
-                this.setFlipX(false)
-            } // else {
-            //     this.body.setVelocityX(0);
-            //     this.body.setVelocityY(0);
-            // }
+            }
         }
 
     }

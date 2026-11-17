@@ -14,7 +14,7 @@ Game Feel Developer: **Oliwia Glowczynska**<br>
 
 ### ⚙️ Running Instructions
 
-**Play Online**: [LIVE DEMO]
+**Play Online**: [LIVE DEMO](https://glovolivia.github.io/Hop-To-It/)
 
 #### Play locally
 1. Download and extract project files

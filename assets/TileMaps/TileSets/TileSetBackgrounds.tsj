@@ -1,0 +1,14 @@
+{ "columns":4,
+ "image":"..\/..\/..\/..\/..\/..\/..\/..\/Downloads\/kenney_new-platformer-pack-1.1\/Spritesheets\/spritesheet-backgrounds-default.png",
+ "imageheight":1027,
+ "imagewidth":1027,
+ "margin":0,
+ "name":"TileSetBackgrounds",
+ "spacing":1,
+ "tilecount":16,
+ "tiledversion":"1.12.2",
+ "tileheight":256,
+ "tilewidth":256,
+ "type":"tileset",
+ "version":"1.10"
+}

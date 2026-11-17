@@ -1,5 +1,7 @@
 # Hop-To-It! 🐸
 
+![Hop To It Banner](assets/Graphics/banner.png)
+
 A cute frog centered 2D platformer, made by ***The Frog Squad***
 
 ## Meet the TEAM!
@@ -12,7 +14,7 @@ Game Feel Developer: **Oliwia Glowczynska**<br>
 
 ### ⚙️ Running Instructions
 
-**Play Online**: [LIVE DEMO]
+**Play Online**: [LIVE DEMO](https://glovolivia.github.io/Hop-To-It/)
 
 #### Play locally
 1. Download and extract project files

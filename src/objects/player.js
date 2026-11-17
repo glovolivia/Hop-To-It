@@ -79,8 +79,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         }
 
         if (!this.inWater){
-            if(this.anims.isPlaying && !this.jumping) {
-                this.stop();
+            if(!this.jumping) {
+                if(this.anims.isPlaying) {
+                    this.stop();
+                }
                 this.setTexture('player');
             }
 

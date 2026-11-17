@@ -24,7 +24,7 @@ export class JesseLVL extends Phaser.Scene {
         ];
 
         map.createLayer('Background', tileSets, 0, 0);
-        map.createLayer('Water', tileSets, 0, 0);
+        this.waterLayer = map.createLayer('Water', tileSets, 0, 0);
         map.createLayer('PlatformDecorBehind', tileSets, 0, 0);
         map.createLayer('PlatformDecor', tileSets, 0, 0);
         map.createLayer('Slides', tileSets, 0, 0);
@@ -35,6 +35,7 @@ export class JesseLVL extends Phaser.Scene {
         this.physics.add.collider(this.player, this.platforms);
         this.player.setScale(0.5);
         this.player.setDepth(2);
+        this.player.waterLayer = this.waterLayer;
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.player);

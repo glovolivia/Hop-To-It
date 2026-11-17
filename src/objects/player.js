@@ -14,11 +14,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.body.setGravityY(900);
         this.body.setAllowGravity(!this.inWater);
 		
-        if(this.inWater) {
-            this.setDrag(450);
-        } else {
-            this.setDrag(700);
-        }
 
         this.min_jump_strength = 150;
 		this.max_jump_strength = 500;
@@ -34,6 +29,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     update(time, delta){
+        //check if in water 
+        this.inWater = this.waterLayer.hasTileAtWorldXY(this.body.center.x, this.body.center.y);
+
+
+
         if (this.body.velocity.x > 0){
             this.setFlipX(true)
 
@@ -54,6 +54,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         }
 
         if (!this.inWater){
+            this.body.setAllowGravity(true);
             if (!this.jumping){
                 if (this.cursor.right.isDown || this.right.isDown){
                 this.setVelocityX(100)
@@ -89,17 +90,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         }
 
         if (this.inWater){
+            this.body.setAllowGravity(false);
             if (this.cursor.up.isDown || this.up.isDown){
-                this.setAccelerationY(-1000);
+                this.setAccelerationY(-400);
             }
             else if (this.cursor.down.isDown || this.down.isDown){
-                this.setAccelerationY(1000);
+                this.setAccelerationY(400);
             }
-            if (this.cursor.right.isDown || this.right.isDown){
-                this.setAccelerationX(1000);
+            else if (this.cursor.right.isDown || this.right.isDown){
+                this.setAccelerationX(400);
             }
             else if (this.cursor.left.isDown || this.left.isDown){
-                this.setAccelerationX(-1000);
+                this.setAccelerationX(-400);
             }
         }
 

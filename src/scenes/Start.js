@@ -16,6 +16,11 @@ export class Start extends Phaser.Scene {
 
         this.load.audio('click', 'assets/Audio/click1.wav');
 
+        //Player images loaded here so they can be accessed from anywhere 
+        this.load.image("player", 'assets/Graphics/frog_idle.png');
+        this.load.image("player_jump", 'assets/Graphics/frog_jump.png');
+        this.load.image("player_chill", 'assets/Graphics/frog_rest.png');
+
     }
 
     async create() {

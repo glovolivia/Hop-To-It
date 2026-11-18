@@ -26,6 +26,31 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.right = this.scene.input.keyboard.addKey("D", false, true);
         this.jump = this.scene.input.keyboard.addKey("SPACE", false, true);
         this.cursor = this.scene.input.keyboard.createCursorKeys();
+
+        if(!this.anims.exists('frog_jump')) { //this can be done without an animation but the original idea was to use one (just so happens it wasn't working gang)
+            this.anims.create({
+                key: 'frog_jump',
+                frames: [
+                    { key: 'player_jump'},
+                    //{ key: 'player'}
+                ],
+                frameRate: 6,
+                repeat: 0
+            });
+        }
+
+        if(!this.anims.exists('frog_swim')) {
+            this.anims.create({
+                key: 'frog_swim',
+                frames: [
+                    { key: 'player_jump'},
+                    { key: 'player_chill'},
+                    { key: 'player_jump'}
+                ],
+                frameRate: 1.5,
+                repeat: -1
+            });
+        }
     }
 
     update(time, delta){
@@ -54,7 +79,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         }
 
         if (!this.inWater){
-            this.body.setAllowGravity(true);
+            if(!this.jumping) {
+                if(this.anims.isPlaying) {
+                    this.stop();
+                }
+                this.setTexture('player');
+            }
+
+            this.body.setAllowGravity(true); //reset back to normal in case inWater was true before
             if (!this.jumping){
                 if (this.cursor.right.isDown || this.right.isDown){
                 this.setVelocityX(100)
@@ -71,6 +103,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                     const power = Math.max(this.jump_charge, this.min_jump_strength);
                     const facing = this.flipX ? 1 : -1;
 
+
                     this.jumping = true;
                     this.setDrag(0, 0);
                     this.setBounce(0.6, 0);
@@ -80,6 +113,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                 }
             }
             if (this.jumping){
+                this.play('frog_jump', true);
                 if (this.cursor.right.isDown || this.right.isDown){
                     this.setAccelerationX(200);
                 }
@@ -90,9 +124,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         }
 
         if (this.inWater){
-            this.body.setAllowGravity(false);
+            this.body.setAllowGravity(false); // For game feel and to make swimming make sense
+            this.setDrag(500,500);
+            this.play('frog_swim', true);
+
             if (this.cursor.up.isDown || this.up.isDown){
-                this.setAccelerationY(-400);
+                this.setAccelerationY(-300);
             }
             if (this.cursor.down.isDown || this.down.isDown){
                 this.setAccelerationY(400);

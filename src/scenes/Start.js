@@ -48,7 +48,7 @@ export class Start extends Phaser.Scene {
         this.ui.add(this.add.text(650, 150, 'HOP TO IT!', { fontSize: '156px', fontFamily: 'Lilita One', fill: '#FFF', stroke: "#5a9513", strokeThickness: 20 }).setOrigin(0.5).setShadow(10, 10, '#314e0d76', 14));
 
         //buttons
-        this.ui.add(setupButton(this, null, 'Start', 655, 290, 2, 'button', 'pressed', 'JesseLVL', 'click'));
+        this.ui.add(setupButton(this, null, 'Start', 655, 290, 2, 'button', 'pressed', 'LevelSelector', 'click'));
         this.ui.add(setupButton(this, null, 'Controls', 470, 400, 1.8, 'button', 'pressed', 'Controls', 'click'));
         this.ui.add(setupButton(this, null, 'Credits', 850, 400, 1.8, 'button', 'pressed', 'Credits', 'click'));
 

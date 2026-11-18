@@ -13,11 +13,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
         this.body.setGravityY(900);
         this.body.setAllowGravity(!this.inWater);
-        if (!this.inWater) {this.setDragX(1000)}
+        if (!this.inWater) {this.setDrag(1000,0)}
 		
 
-        this.min_jump_strength = 150;
-		this.max_jump_strength = 500;
+        this.min_jump_strength = 200;
+		this.max_jump_strength = 800;
 		this.jump_charge_rate = 600;   // velocity gained per second of holding
 		this.jump_charge = 0;
 
@@ -27,6 +27,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.right = this.scene.input.keyboard.addKey("D", false, true);
         this.jump = this.scene.input.keyboard.addKey("SPACE", false, true);
         this.cursor = this.scene.input.keyboard.createCursorKeys();
+
+        this.chargeSound = this.scene.sound.add('charge_sfx', { loop: true, volume: 0.6 });
+        this.chargeMaxDetune = 1200
 
         if(!this.anims.exists('frog_jump')) { //this can be done without an animation but the original idea was to use one (just so happens it wasn't working gang)
             this.anims.create({
@@ -54,6 +57,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         }
     }
 
+    updateChargeSound() {
+        const ratio = this.jump_charge / this.max_jump_strength;
+
+        if (!this.chargeSound.isPlaying) {
+            this.chargeSound.play();
+        }
+        this.chargeSound.setDetune(ratio * this.chargeMaxDetune);
+    }
+
+    stopChargeSound() {
+        this.chargeSound.stop();
+    }
+
     update(time, delta){
         //check if in water 
         this.inWater = this.waterLayer.hasTileAtWorldXY(this.body.center.x, this.body.center.y);
@@ -71,8 +87,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
         if (this.jumping && onGround && this.body.velocity.y >= 0) {
             this.jumping = false;
-            this.setDragX(1000);
+            this.setDrag(1000,0);
             this.setBounce(0, 0);
+        }
+
+        if (this.chargeSound.isPlaying && (!this.jump.isDown || this.inWater || this.jumping)) {
+            this.stopChargeSound();
         }
 
         if (!this.inWater){
@@ -91,10 +111,22 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                 if (this.cursor.left.isDown || this.left.isDown){
                     this.setVelocityX(-100)
                 }
-                if (this.jump.isDown){
+                if (onGround && this.jump.isDown){
                     this.jump_charge = Math.min(this.jump_charge + this.jump_charge_rate * dt, this.max_jump_strength)
+                    this.updateChargeSound();
                 }
-                if (Phaser.Input.Keyboard.JustUp(this.jump)){
+                if (onGround && Phaser.Input.Keyboard.JustUp(this.jump)){
+                    this.scene.sound.play("jump_sfx")
+                    this.particles = this.scene.add.particles(0, 0, 'star4', {
+                        scale: {start: 0.1, end: 0.05, random: true},
+                        angle: { min: 0, max: 180},
+                        x: this.x,
+                        y: this.y,
+                        speed: 150,
+                        color: [0xFFFFFF]
+                    });
+                    this.scene.time.delayedCall(300, () => {this.particles.destroy();});
+
                     const power = Math.max(this.jump_charge, this.min_jump_strength);
                     const facing = this.flipX ? 1 : -1;
 
@@ -111,17 +143,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                 this.play('frog_jump', true);
                 if (this.body.blocked.left || this.body.blocked.left){
                     if (this.body.velocity.x > 0){
-                        this.setFlipX(true)
+                        this.setFlipX(true);
                     }
                     else if (this.body.velocity.x < 0){
-                        this.setFlipX(false)
+                        this.setFlipX(false);
                     }
                 }
                 if (this.cursor.right.isDown || this.right.isDown){
                     this.setAccelerationX(200);
                 }
                 if (this.cursor.left.isDown || this.left.isDown){
-                    this.setAccelerationX(-200)
+                    this.setAccelerationX(-200);
                 }
             }
         }
@@ -133,15 +165,51 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
             if (this.cursor.up.isDown || this.up.isDown){
                 this.setAccelerationY(-300);
+                const particles = this.scene.add.particles(0, 0, 'star4', {
+                        scale: {start: 0.05, end: 0.01, random: true},
+                        angle: { min: 180, max: 0},
+                        x: this.x,
+                        y: this.y,
+                        speed: 150,
+                        color: [0xFFFFFF]
+                    });
+                    this.scene.time.delayedCall(100, () => {particles.destroy();});
             }
             if (this.cursor.down.isDown || this.down.isDown){
                 this.setAccelerationY(400);
+                const particles = this.scene.add.particles(0, 0, 'star4', {
+                        scale: {start: 0.05, end: 0.01, random: true},
+                        angle: { min: 180, max: 0},
+                        x: this.x,
+                        y: this.y,
+                        speed: 150,
+                        color: [0xFFFFFF]
+                    });
+                    this.scene.time.delayedCall(100, () => {particles.destroy();});
             }
             if (this.cursor.right.isDown || this.right.isDown){
                 this.setAccelerationX(400);
+                const particles = this.scene.add.particles(0, 0, 'star4', {
+                        scale: {start: 0.05, end: 0.01, random: true},
+                        angle: { min: 90, max: 270},
+                        x: this.x,
+                        y: this.y,
+                        speed: 150,
+                        color: [0xFFFFFF]
+                    });
+                    this.scene.time.delayedCall(100, () => {particles.destroy();});
             }
             if (this.cursor.left.isDown || this.left.isDown){
                 this.setAccelerationX(-400);
+                const particles = this.scene.add.particles(0, 0, 'star4', {
+                        scale: {start: 0.05, end: 0.01, random: true},
+                        angle: { min: -90, max: 90},
+                        x: this.x,
+                        y: this.y,
+                        speed: 150,
+                        color: [0xFFFFFF]
+                    });
+                    this.scene.time.delayedCall(100, () => {particles.destroy();});
             }
         }
 

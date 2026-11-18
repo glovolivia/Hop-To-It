@@ -13,6 +13,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
         this.body.setGravityY(900);
         this.body.setAllowGravity(!this.inWater);
+        if (!this.inWater) {this.setDragX(1000)}
 		
 
         this.min_jump_strength = 150;
@@ -57,15 +58,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         //check if in water 
         this.inWater = this.waterLayer.hasTileAtWorldXY(this.body.center.x, this.body.center.y);
 
+        const right = this.cursor.right.isDown || this.right.isDown
+        const left = this.cursor.left.isDown || this.left.isDown
 
-
-        if (this.body.velocity.x > 0){
-            this.setFlipX(true)
-
-        }
-        else if (this.body.velocity.x < 0){
-            this.setFlipX(false)
-        }
+        if (right && !left){this.setFlipX(true)}
+        else if (left && !right){this.setFlipX(false)}
 
         const onGround = this.body.blocked.down;
 
@@ -74,7 +71,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
         if (this.jumping && onGround && this.body.velocity.y >= 0) {
             this.jumping = false;
-            this.setDragX(700);
+            this.setDragX(1000);
             this.setBounce(0, 0);
         }
 
@@ -89,12 +86,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             this.body.setAllowGravity(true); //reset back to normal in case inWater was true before
             if (!this.jumping){
                 if (this.cursor.right.isDown || this.right.isDown){
-                this.setVelocityX(100)
-                this.setFlipX(true)
+                    this.setVelocityX(100)
                 }
                 if (this.cursor.left.isDown || this.left.isDown){
                     this.setVelocityX(-100)
-                    this.setFlipX(false)
                 }
                 if (this.jump.isDown){
                     this.jump_charge = Math.min(this.jump_charge + this.jump_charge_rate * dt, this.max_jump_strength)
@@ -114,6 +109,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             }
             if (this.jumping){
                 this.play('frog_jump', true);
+                if (this.body.blocked.left || this.body.blocked.left){
+                    if (this.body.velocity.x > 0){
+                        this.setFlipX(true)
+                    }
+                    else if (this.body.velocity.x < 0){
+                        this.setFlipX(false)
+                    }
+                }
                 if (this.cursor.right.isDown || this.right.isDown){
                     this.setAccelerationX(200);
                 }

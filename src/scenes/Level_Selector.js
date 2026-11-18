@@ -50,9 +50,9 @@ export class LevelSelector extends Phaser.Scene {
         this.ui.add(this.add.text(650, 150, 'Level Selector', { fontSize: '156px', fontFamily: 'Lilita One', fill: '#FFF', stroke: "#5a9513", strokeThickness: 20 }).setOrigin(0.5).setShadow(10, 10, '#314e0d76', 14));
 
         //buttons
-        this.ui.add(setupButton(this, null, "wyatt's level", 655, 290, 2, 'button', 'pressed', 'WyattLVL', 'click'));
-        this.ui.add(setupButton(this, null, 'Hop King', 655, 400, 2, 'button', 'pressed', 'JesseLVL', 'click'));
-        this.ui.add(setupButton(this, null, 'Flow State', 655, 510, 2, 'button', 'pressed', 'OliviaLVL', 'click'));
+        this.ui.add(setupButton(this, null, "Rock Hopper", 655, 310, 2.5, 'button', 'pressed', 'WyattLVL', 'click'));
+        this.ui.add(setupButton(this, null, 'Hop King', 655, 440, 2.5, 'button', 'pressed', 'JesseLVL', 'click'));
+        this.ui.add(setupButton(this, null, 'Flow State', 655, 570, 2.5, 'button', 'pressed', 'OliviaLVL', 'click'));
         this.backButton = setupButton(this, 'close', false, 50, 45, 0.7, 'squareButton', 'squareButtonPressed', 'Start', 'click');
 
         this.tweens.add({

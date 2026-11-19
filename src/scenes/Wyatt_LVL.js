@@ -118,6 +118,7 @@ export class WyattLVL extends Phaser.Scene {
                 p.score += c.value;
                 //console.log(p.score); 
                 this.sound.play("pickup_sfx")
+                this.score_label.text = "Points: " + p.score + "/" + this.target_score;
                 this.checkEndGame()}
             );
                 

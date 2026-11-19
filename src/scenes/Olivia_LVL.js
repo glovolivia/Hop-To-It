@@ -122,8 +122,9 @@ export class OliviaLVL extends Phaser.Scene {
                             c.destroy(true);
                             this.checkEndGame();}
                     }); 
-                    this.player.score += c.value;
-                    console.log('pscore: ', this.player.score);
+                    this.player.score += 1;
+                    //console.log('pscore: ', this.player.score);
+                    this.score_label.text = "Points: " + p.score + "/" + this.target_score;
                     this.sound.play("pickup_sfx");
                     this.checkEndGame();}
                 );

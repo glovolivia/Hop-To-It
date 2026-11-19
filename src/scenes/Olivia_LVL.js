@@ -128,20 +128,6 @@ export class OliviaLVL extends Phaser.Scene {
             this.score_label.setDepth(100);
         }
 
-        updateFlyMarkers() {
-            const view = this.cameras.main.worldView;
-            const margin = 20;
-
-            for (const fly of this.flies.getChildren()) {
-                const offscreen = !view.contains(fly.x, fly.y);
-                fly.dot.setVisible(offscreen);
-
-                if (offscreen) {
-                    fly.dot.x = Phaser.Math.Clamp(fly.x, view.left + margin, view.right - margin);
-                    fly.dot.y = Phaser.Math.Clamp(fly.y, view.top + margin, view.bottom - margin);
-                }
-            }
-        }
     
         activateLever() {
             this.lever.on = true;
@@ -156,8 +142,7 @@ export class OliviaLVL extends Phaser.Scene {
 
         update(time, delta) {
             this.player.update(time, delta);
-            this.updateFlyMarkers();
-    
+            
             this.physics.world.overlap(this.player, this.flies, (p,c) => { 
                    c.body.enable = false;
                    this.tweens.add({

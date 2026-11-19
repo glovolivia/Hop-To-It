@@ -88,9 +88,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.chargeSound.stop();
     }
 
+    getGroundTile() {
+        const x = this.body.center.x;
+        const y = this.body.bottom + 1;
+        return this.groundLayer.getTileAtWorldXY(x, y);
+    }
+
     update(time, delta){
         //check if in water 
         const wasInWater = this.inWater;
+        console.log(this.drag)
+
         this.inWater = this.waterLayer.hasTileAtWorldXY(this.body.center.x, this.body.center.y);
 
         if(this.inWater && !wasInWater) {
@@ -105,12 +113,32 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
         const onGround = this.body.blocked.down;
 
+        //Set the drag
+        if (this.inWater) {
+            this.setDrag(500, 500);
+        } else if (this.jumping) {
+            this.setDrag(0, 0);
+        } else {
+            if (onGround){
+                const tile = this.getGroundTile();
+                console.log(tile ? tile.index : null, tile ? tile.properties : null, this.body.drag.x);
+                if (tile){
+                    if (tile.properties.slip){
+                        this.setDrag(100,0)
+                    }
+                    else{
+                        this.setDrag(1000,0)
+                    }
+                }
+            }
+        }
+
+
         const dt = delta / 1000;
         this.setAcceleration(0, 0);
 
         if (this.jumping && onGround && this.body.velocity.y >= 0) {
             this.jumping = false;
-            this.setDrag(1000,0);
             this.setBounce(0, 0);
         }
 
@@ -181,7 +209,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                     }
 
                     this.jumping = true;
-                    this.setDrag(0, 0);
                     this.setBounce(0.6, 0);
                     this.setVelocity(facing * power * 0.6, -power);
                     this.jump_charge = 0;
@@ -212,7 +239,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                 this.bubbles.explode(1, this.x, this.y - 18);
             }
             this.body.setAllowGravity(false); // For game feel and to make swimming make sense
-            this.setDrag(500,500);
             this.play('frog_swim', true);
 
             if (this.cursor.up.isDown || this.up.isDown){
@@ -228,6 +254,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                 this.setAccelerationX(-400);
             }
         }
+
+        
 
     }
 }

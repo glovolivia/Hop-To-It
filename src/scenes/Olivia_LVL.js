@@ -11,7 +11,7 @@ export class OliviaLVL extends Phaser.Scene {
             this.load.audio("charge_sfx", "assets/Audio/kenney_digital-audio/Audio/laser1.ogg");
             this.load.audio("pickup_sfx", "assets/Audio/kenney_digital-audio/Audio/powerUp7.ogg");
     
-            this.load.tilemapTiledJSON('level', 'assets/TileMaps/TileMapOliv.json')
+            this.load.tilemapTiledJSON('Olivia-LVL', 'assets/TileMaps/TileMapOliv.json')
             this.load.image('tilesBackgrounds', 'assets/TileMaps/TileSetsPNG/spritesheet-backgrounds-default.png');
             //this.load.image('tilesDouble', 'assets/TileMaps/TileSetsPNG/spritesheet-tiles-double.png');
             this.load.image('tilesNormal', 'assets/TileMaps/TileSetsPNG/spritesheet-tiles-default.png');
@@ -28,7 +28,7 @@ export class OliviaLVL extends Phaser.Scene {
         }
     
         create() {
-            const map = this.make.tilemap({ key: 'level' });
+            const map = this.make.tilemap({ key: 'Olivia-LVL' });
             const tileSets = [
                 map.addTilesetImage('TileSetBackgrounds', 'tilesBackgrounds'),
                 //map.addTilesetImage('spritesheet-tiles-double', 'tilesDouble'),
@@ -55,6 +55,7 @@ export class OliviaLVL extends Phaser.Scene {
             this.player.setScale(0.5);
             this.player.setDepth(2);
             this.player.waterLayer = this.waterLayer;
+            this.player.groundLayer = this.platforms;
             this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
             this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
             this.cameras.main.startFollow(this.player);
@@ -78,6 +79,12 @@ export class OliviaLVL extends Phaser.Scene {
                             fly.setDepth(10);
                             fly.setScale(0.4);
                             fly.refreshBody();
+
+                            fly.dot = this.add.image(obj.x, obj.y, "fly");
+                            fly.dot.setScale(0.1);
+                            fly.dot.setDepth(50);
+                            fly.dot.setVisible(false);
+
                             this.flies.add(fly);
                             this.target_score += fly.value;
                         }
@@ -116,6 +123,24 @@ export class OliviaLVL extends Phaser.Scene {
 
 
             
+            this.score_label = this.add.text(0, 0, 'Points: ' + this.player.score + "/" + this.target_score, { fontSize: '32px', fill: '#FFF' });
+            this.score_label.setScrollFactor(0);
+            this.score_label.setDepth(100);
+        }
+
+        updateFlyMarkers() {
+            const view = this.cameras.main.worldView;
+            const margin = 20;
+
+            for (const fly of this.flies.getChildren()) {
+                const offscreen = !view.contains(fly.x, fly.y);
+                fly.dot.setVisible(offscreen);
+
+                if (offscreen) {
+                    fly.dot.x = Phaser.Math.Clamp(fly.x, view.left + margin, view.right - margin);
+                    fly.dot.y = Phaser.Math.Clamp(fly.y, view.top + margin, view.bottom - margin);
+                }
+            }
         }
     
         activateLever() {
@@ -131,6 +156,7 @@ export class OliviaLVL extends Phaser.Scene {
 
         update(time, delta) {
             this.player.update(time, delta);
+            this.updateFlyMarkers();
     
             this.physics.world.overlap(this.player, this.flies, (p,c) => { 
                    c.body.enable = false;
@@ -142,9 +168,11 @@ export class OliviaLVL extends Phaser.Scene {
                             c.destroy(true);
                             this.checkEndGame();}
                     }); 
-                    this.player.score += c.value;
-                    console.log('pscore: ', this.player.score);
-                    this.sound.play("pickup_sfx")}
+                    this.player.score += 1;
+                    //console.log('pscore: ', this.player.score);
+                    this.score_label.text = "Points: " + p.score + "/" + this.target_score;
+                    this.sound.play("pickup_sfx");
+                    this.checkEndGame();}
                 );
                     
         }

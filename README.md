@@ -12,6 +12,18 @@ Game Feel Developer: **Oliwia Glowczynska**<br>
 
 ### 🎮 Controls
 
+Move Left : A/Left Arrow
+Move Right : D/Right Arrow
+Swim Up : W/Up Arrow
+Swim Down : S/Down Arrow
+Jump : Space (Hold to Jump Higher)
+
+### 📸 Camera Behavior 
+
+The camera is locked to the player characyer, keeping them center screen with the exception
+that should the player character be too close to outside the map, the camera will stop
+on the border to prevent the player from observing things outside of the map.
+
 ### ⚙️ Running Instructions
 
 **Play Online**: [LIVE DEMO](https://glovolivia.github.io/Hop-To-It/)
@@ -21,8 +33,17 @@ Game Feel Developer: **Oliwia Glowczynska**<br>
 2. Open Terminal and navigate to project directory
 3. Run: python3 -m http.server 8000
 4. Open http://localhost:8000 in your browser.
+5. Upon startup, selecting "Start" will bring you to a level selector screen
 
 ### 🐸 Features
+
+- Rock Hopper (Wyatt Berson): Teleporter (Move through the tunnel to appear elsewhere in the level)
+- Hop King (Jesse Chung): Slippery Ice (The white-topped stone platforms are slippery)
+- Flow State (Oliwia Glowczynska): Lever Mechanism (Flip the lever to access previously blocked location)
+
+### ✨ Additional Elements
+
+ - Underwater swimming movement: The player character (frog) has seperate movement when within water
 
 ## 🌿 Credits & Attributions
 
@@ -33,6 +54,4 @@ Game Feel Developer: **Oliwia Glowczynska**<br>
 ### 🎵 Audio
 
 - OpenGameArt: https://opengameart.org/
-
-### ✨ Additional Resources 
 

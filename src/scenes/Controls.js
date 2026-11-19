@@ -26,7 +26,13 @@ export class Controls extends Phaser.Scene {
             
         this.backButton = setupButton(this, 'close', false, 50, 45, 0.7, 'squareButton', 'squareButtonPressed', 'Start', 'click');
 
-       
+        this.ui.add(this.add.text(650, 120, "Controls", { fontSize: '48px', fontFamily: 'Trebuchet MS', fill: '#FFF', align: "center", stroke: "#070706d9", strokeThickness: 3 }).setOrigin(0.5).setShadow(3, 3, '#667580', 4));
+        this.ui.add(this.add.text(650, 220, "Move Left : A/Left Arrow", { fontSize: '24px', fontFamily: 'Trebuchet MS', fill: '#FFF', align: "center", stroke: "#070706d9", strokeThickness: 3 }).setOrigin(0.5).setShadow(3, 3, '#667580', 4));
+        this.ui.add(this.add.text(650, 280, "Move Right : D/Right Arrow", { fontSize: '24px', fontFamily: 'Trebuchet MS', fill: '#FFF', align: "center", stroke: "#070706d9", strokeThickness: 3 }).setOrigin(0.5).setShadow(3, 3, '#667580', 4));
+        this.ui.add(this.add.text(650, 340, "Swim Up : W/Up Arrow", { fontSize: '24px', fontFamily: 'Trebuchet MS', fill: '#FFF', align: "center", stroke: "#070706d9", strokeThickness: 3 }).setOrigin(0.5).setShadow(3, 3, '#667580', 4));
+        this.ui.add(this.add.text(650, 400, "Swim Down : S/Down Arrow", { fontSize: '24px', fontFamily: 'Trebuchet MS', fill: '#FFF', align: "center", stroke: "#070706d9", strokeThickness: 3 }).setOrigin(0.5).setShadow(3, 3, '#667580', 4));
+        this.ui.add(this.add.text(650, 460, "Jump : Space (Hold to Jump Higher)", { fontSize: '24px', fontFamily: 'Trebuchet MS', fill: '#FFF', align: "center", stroke: "#070706d9", strokeThickness: 3 }).setOrigin(0.5).setShadow(3, 3, '#667580', 4));
+
         this.tweens.add({
             targets: this.ui,
             repeat: -1,

@@ -15,11 +15,14 @@ export class Start extends Phaser.Scene {
         this.load.image('squareButtonPressed', 'assets/Graphics/buttonSquare_brown_pressed.png');
 
         this.load.audio('click', 'assets/Audio/click1.wav');
+        this.load.audio('bgMusic', 'assets/Audio/flowerbed_fields.wav');
 
         //Player images loaded here so they can be accessed from anywhere 
         this.load.image("player", 'assets/Graphics/frog_idle.png');
         this.load.image("player_jump", 'assets/Graphics/frog_jump.png');
         this.load.image("player_chill", 'assets/Graphics/frog_rest.png');
+
+
 
     }
 
@@ -29,6 +32,8 @@ export class Start extends Phaser.Scene {
 
         //camera fade in
         this.cameras.main.fadeIn(200, 0, 0, 0);
+        
+        if(!this.sound.get('bgMusic')) this.sound.play('bgMusic', { volume: 0.2, loop: true });
 
         //Get cords on pointerdown (easier to set up UI)
         this.input.on('pointerdown', (pointer) => {

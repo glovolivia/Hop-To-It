@@ -10,6 +10,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
         this.jumping = false
         this.inWater = false;
+        this.score = 0;
 
         this.body.setGravityY(900);
         this.body.setAllowGravity(!this.inWater);

@@ -41,7 +41,6 @@ export class Credits extends Phaser.Scene {
             repeat: -1,
             yoyo: true,
             y: -5,
-            duration: 12000,
             ease: 'Sine.easeInOut',
         });
     }

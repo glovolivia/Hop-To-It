@@ -19,6 +19,10 @@ export class OliviaLVL extends Phaser.Scene {
             this.load.image('fly', 'assets/Graphics/fly.png');
             this.load.image("star4", "assets/Graphics/dirt_02.png");
             this.load.image('bubbles', 'assets/Graphics/circle_02.png');
+            this.load.image('lever', 'assets/Graphics/lever.png');
+            this.load.image('lever_left', 'assets/Graphics/lever_left.png');
+            this.load.image('lever_right', 'assets/Graphics/lever_right.png');
+            this.load.image('gate', 'assets/Graphics/chain.png');
 
             this.load.audio('olivMusic', 'assets/Audio/platformer_alt.wav');
         }
@@ -80,6 +84,31 @@ export class OliviaLVL extends Phaser.Scene {
                     }
                 }
             }
+
+            const leverObject = map.getObjectLayer("lever").objects[0];
+            const gateObject = map.getObjectLayer("gate");
+
+            this.lever = this.add.sprite(leverObject.x + 32, leverObject.y - 32, 'lever');
+
+            this.gates = this.add.group('gates');
+
+            for(var object of gateObject.objects) {
+                if (objects.properties) {
+                    if(object.properties[0].name == 'lock' && object.properties[0].lock) {
+                        let gate = this.physics.add.staticSprite(object.x + 32, object.y - 32, "gate");
+                        gate.lock = object.properties[0].lock;
+                        gate.setDepth(20);
+                        gate.refreshBody();
+                        this.gates.add(gate);
+                    }
+                }
+            }
+
+            this.physics.add.collider(this.player, this.gates)
+
+
+
+            
         }
     
         update(time, delta) {

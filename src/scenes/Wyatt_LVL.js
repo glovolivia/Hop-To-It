@@ -61,15 +61,17 @@ export class WyattLVL extends Phaser.Scene {
                 {
                     if (obj.properties[0].name == "value" && obj.properties[0].value)
                     {
-                        let fly = this.physics.add.staticSprite(obj.x, obj.y, "fly");
+                        let fly = this.physics.add.staticSprite(obj.x + 32, obj.y -32, "fly");
+                        fly.value = obj.properties[0].value;
                         fly.setDepth(10);
-                        fly.setScale(0.25);
+                        fly.setScale(0.4);
                         fly.refreshBody();
                         this.flies.add(fly);
                         this.target_score += 1;
                     }
                 }
             }
+            //console.log(this.target_score);
         }
     }
 
@@ -83,9 +85,11 @@ export class WyattLVL extends Phaser.Scene {
                   scale: 0.2, 
                   duration: 300, 
                   onComplete: () => {
-                        c.destroy(true);}
+                        c.destroy(true);
+                        this.checkEndGame();}
                 }); 
-                p.score += c.value; 
+                p.score += c.value;
+                //console.log(p.score); 
                 this.sound.play("pickup_sfx")}
             );
                 

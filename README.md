@@ -12,15 +12,15 @@ Game Feel Developer: **Oliwia Glowczynska**<br>
 
 ### 🎮 Controls
 
-Move Left : A/Left Arrow
-Move Right : D/Right Arrow
-Swim Up : W/Up Arrow
-Swim Down : S/Down Arrow
-Jump : Space (Hold to Jump Higher)
+Move Left : A/Left Arrow<br>
+Move Right : D/Right Arrow<br>
+Swim Up : W/Up Arrow<br>
+Swim Down : S/Down Arrow<br>
+Jump : Space (Hold to Jump Higher)<br>
 
 ### 📸 Camera Behavior 
 
-The camera is locked to the player characyer, keeping them center screen with the exception
+The camera is locked to the player character, keeping them center screen with the exception
 that should the player character be too close to outside the map, the camera will stop
 on the border to prevent the player from observing things outside of the map.
 

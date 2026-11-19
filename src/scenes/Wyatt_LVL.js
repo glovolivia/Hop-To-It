@@ -17,6 +17,7 @@ export class WyattLVL extends Phaser.Scene {
         this.load.image('tilesNormal', 'assets/TileMaps/TileSetsPNG/spritesheet-tiles-default.png');
         this.load.image('background', 'assets/banner.png' );
         this.load.image('fly', 'assets/Graphics/fly.png');
+        this.load.image('portal', 'assets/Graphics/window.png');
         this.load.image("star4", "assets/Graphics/star4.png");
     }
 
@@ -51,6 +52,7 @@ export class WyattLVL extends Phaser.Scene {
         this.cameras.main.setRoundPixels(true);
 
         this.flies = this.add.group("flies");
+        this.portals = this.add.group("portals");
 
         let objects = map.getObjectLayer("collectibles");
         if (objects)
@@ -75,6 +77,17 @@ export class WyattLVL extends Phaser.Scene {
 
                         this.flies.add(fly);
                         this.target_score += 1;
+                    }
+                    if (obj.properties[0].name == "exitX" && obj.properties[1].name == "exitY"){
+                        let portal = this.physics.add.staticSprite(obj.x + 32, obj.y -32, "portal");
+                        //console.log(obj.properties[0]);
+                        portal.exitX = obj.properties[0].value;
+                        portal.exitY = obj.properties[1].value;
+                        portal.setDepth(10);
+                        //portal.setScale(0.4);
+                        portal.refreshBody();
+
+                        this.portals.add(portal);
                     }
                 }
             }
@@ -121,6 +134,13 @@ export class WyattLVL extends Phaser.Scene {
                 this.score_label.text = "Points: " + p.score + "/" + this.target_score;
                 this.checkEndGame()}
             );
+
+            this.physics.world.overlap(this.player, this.portals, (p,c) => { 
+                p.x = c.exitX;
+                p.y = c.exitY;}
+            );
+
+
                 
     }
 

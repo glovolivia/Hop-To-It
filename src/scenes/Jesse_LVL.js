@@ -44,6 +44,7 @@ export class JesseLVL extends Phaser.Scene {
         this.player.setScale(0.5);
         this.player.setDepth(2);
         this.player.waterLayer = this.waterLayer;
+        this.player.groundLayer = this.platforms;
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.player);
@@ -66,16 +67,43 @@ export class JesseLVL extends Phaser.Scene {
                         fly.setDepth(10);
                         fly.setScale(0.25);
                         fly.refreshBody();
+
+                        fly.dot = this.add.image(obj.x, obj.y, "fly");
+                        fly.dot.setScale(0.1);
+                        fly.dot.setDepth(50);
+                        fly.dot.setVisible(false);
+
                         this.flies.add(fly);
                         this.target_score += 1;
                     }
                 }
             }
         }
+
+        this.score_label = this.add.text(0, 0, 'Points: ' + this.player.score + "/" + this.target_score, { fontSize: '32px', fill: '#FFF' });
+        this.score_label.setScrollFactor(0);
+        this.score_label.setDepth(100);
+        
+    }
+
+    updateFlyMarkers() {
+        const view = this.cameras.main.worldView;
+        const margin = 20;
+
+        for (const fly of this.flies.getChildren()) {
+            const offscreen = !view.contains(fly.x, fly.y);
+            fly.dot.setVisible(offscreen);
+
+            if (offscreen) {
+                fly.dot.x = Phaser.Math.Clamp(fly.x, view.left + margin, view.right - margin);
+                fly.dot.y = Phaser.Math.Clamp(fly.y, view.top + margin, view.bottom - margin);
+            }
+        }
     }
 
     update(time, delta) {
         this.player.update(time, delta);
+        this.updateFlyMarkers();
 
         this.physics.world.overlap(this.player, this.flies, (p,c) => { 
                c.body.enable = false;
@@ -84,16 +112,20 @@ export class JesseLVL extends Phaser.Scene {
                   scale: 0.2, 
                   duration: 300, 
                   onComplete: () => {
+                        c.dot.destroy();
                         c.destroy(true);}
                 }); 
-                p.score += c.value; 
-                this.sound.play("pickup_sfx")}
+                p.score += 1; 
+                this.sound.play("pickup_sfx");
+                this.score_label.text = "Points: " + p.score + "/" + this.target_score;
+                this.checkEndGame();}
             );
-                
+        
+        
     }
 
     checkEndGame(){
-        if (this.player.score == this.target_score){
+        if (this.player.score >= this.target_score){
             this.scene.stop("JesseLVL");
             this.scene.start('Victory');
         }

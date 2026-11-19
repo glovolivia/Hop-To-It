@@ -11,7 +11,7 @@ export class JesseLVL extends Phaser.Scene {
         this.load.audio("charge_sfx", "assets/Audio/kenney_digital-audio/Audio/laser1.ogg");
         this.load.audio("pickup_sfx", "assets/Audio/kenney_digital-audio/Audio/powerUp7.ogg");
 
-        this.load.tilemapTiledJSON('level', 'assets/TileMaps/TileMapJesse.json')
+        this.load.tilemapTiledJSON('Jesse-LVL', 'assets/TileMaps/TileMapJesse.json')
         this.load.image('tilesBackgrounds', 'assets/TileMaps/TileSetsPNG/spritesheet-backgrounds-default.png');
         //this.load.image('tilesDouble', 'assets/TileMaps/TileSetsPNG/spritesheet-tiles-double.png');
         this.load.image('tilesNormal', 'assets/TileMaps/TileSetsPNG/spritesheet-tiles-default.png');
@@ -22,7 +22,7 @@ export class JesseLVL extends Phaser.Scene {
     }
 
     create() {
-        const map = this.make.tilemap({ key: 'level' });
+        const map = this.make.tilemap({ key: 'Jesse-LVL' });
         const tileSets = [
             map.addTilesetImage('TileSetBackgrounds', 'tilesBackgrounds'),
             //map.addTilesetImage('spritesheet-tiles-double', 'tilesDouble'),

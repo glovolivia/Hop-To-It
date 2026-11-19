@@ -17,7 +17,8 @@ export class JesseLVL extends Phaser.Scene {
         this.load.image('tilesNormal', 'assets/TileMaps/TileSetsPNG/spritesheet-tiles-default.png');
         this.load.image('background', 'assets/banner.png' );
         this.load.image('fly', 'assets/Graphics/fly.png');
-        this.load.image("star4", "assets/Graphics/star4.png");
+        this.load.image("star4", "assets/Graphics/dirt_02.png");
+        this.load.image('bubbles', 'assets/Graphics/circle_02.png');
     }
 
     create() {

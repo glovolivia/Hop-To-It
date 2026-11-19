@@ -56,6 +56,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                 repeat: -1
             });
         }
+
+        this.bubbles = this.scene.add.particles(0, 0, 'bubbles', {
+            speedY: { min: -25, max: -10 },
+            speedX: { min: -5, max: 5 },
+            scale: { start: 0.06, end: 0.02 },
+            alpha: { start: 0.6, end: 0 },
+            lifespan: 1200,
+            tint: 0x8FB8C8,
+            tintFill: true,
+            emitting: false
+        });
+
+        this.bubbles.setDepth(1);
     }
 
     updateChargeSound() {
@@ -119,12 +132,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                 if (onGround && Phaser.Input.Keyboard.JustUp(this.jump)){
                     this.scene.sound.play("jump_sfx")
                     this.particles = this.scene.add.particles(0, 0, 'star4', {
-                        scale: {start: 0.1, end: 0.05, random: true},
-                        angle: { min: 0, max: 180},
+                        scale: {start: 0.1, end: 0.02, random: true},
+                        angle: { min: 0, max: -180 },
+                        quantity: 1,
                         x: this.x,
-                        y: this.y,
+                        y: this.y + 16,
                         speed: 150,
-                        color: [0xFFFFFF]
+                        alpha: {start: 1, end: 0},
+                        tintFill: true,
+                        tint: 0x568C61,
                     });
                     this.scene.time.delayedCall(300, () => {this.particles.destroy();});
 
@@ -160,57 +176,24 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         }
 
         if (this.inWater){
+            if (Math.random() > 0.004) {
+                this.bubbles.explode(1, this.x, this.y + 10);
+            }
             this.body.setAllowGravity(false); // For game feel and to make swimming make sense
             this.setDrag(500,500);
             this.play('frog_swim', true);
 
             if (this.cursor.up.isDown || this.up.isDown){
                 this.setAccelerationY(-300);
-                const particles = this.scene.add.particles(0, 0, 'star4', {
-                        scale: {start: 0.05, end: 0.01, random: true},
-                        angle: { min: 180, max: 0},
-                        x: this.x,
-                        y: this.y,
-                        speed: 150,
-                        color: [0xFFFFFF]
-                    });
-                    this.scene.time.delayedCall(100, () => {particles.destroy();});
             }
             if (this.cursor.down.isDown || this.down.isDown){
                 this.setAccelerationY(400);
-                const particles = this.scene.add.particles(0, 0, 'star4', {
-                        scale: {start: 0.05, end: 0.01, random: true},
-                        angle: { min: 180, max: 0},
-                        x: this.x,
-                        y: this.y,
-                        speed: 150,
-                        color: [0xFFFFFF]
-                    });
-                    this.scene.time.delayedCall(100, () => {particles.destroy();});
             }
             if (this.cursor.right.isDown || this.right.isDown){
                 this.setAccelerationX(400);
-                const particles = this.scene.add.particles(0, 0, 'star4', {
-                        scale: {start: 0.05, end: 0.01, random: true},
-                        angle: { min: 90, max: 270},
-                        x: this.x,
-                        y: this.y,
-                        speed: 150,
-                        color: [0xFFFFFF]
-                    });
-                    this.scene.time.delayedCall(100, () => {particles.destroy();});
             }
             if (this.cursor.left.isDown || this.left.isDown){
                 this.setAccelerationX(-400);
-                const particles = this.scene.add.particles(0, 0, 'star4', {
-                        scale: {start: 0.05, end: 0.01, random: true},
-                        angle: { min: -90, max: 90},
-                        x: this.x,
-                        y: this.y,
-                        speed: 150,
-                        color: [0xFFFFFF]
-                    });
-                    this.scene.time.delayedCall(100, () => {particles.destroy();});
             }
         }
 

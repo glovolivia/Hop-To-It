@@ -257,7 +257,7 @@
  </layer>
  <objectgroup id="10" name="gate">
   <properties>
-   <property name="gate" type="bool" value="false"/>
+   <property name="gate" type="bool" value="true"/>
   </properties>
   <object id="28" gid="50" x="3520" y="2112" width="64" height="64">
    <properties>

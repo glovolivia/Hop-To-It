@@ -338,7 +338,7 @@
                 {
                  "name":"gate",
                  "type":"bool",
-                 "value":false
+                 "value":true
                 }],
          "type":"objectgroup",
          "visible":true,

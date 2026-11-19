@@ -88,29 +88,47 @@ export class OliviaLVL extends Phaser.Scene {
             const leverObject = map.getObjectLayer("lever").objects[0];
             const gateObject = map.getObjectLayer("gate");
 
-            this.lever = this.add.sprite(leverObject.x + 32, leverObject.y - 32, 'lever');
+            this.lever = this.physics.add.staticSprite(leverObject.x + 32 + 64, leverObject.y - 32 + 64 * 2, 'lever_left');
+            this.physics.add.collider(this.player, this.lever, () => {
+                if(this.lever.on && this.player.body.touching.left);
+                this.activateLever();
+            });
+            this.lever.refreshBody();
+            this.lever.body.setSize(16, 16)
+            this.lever.body.setOffset(0, 8)
 
             this.gates = this.add.group('gates');
 
             for(var object of gateObject.objects) {
-                if (objects.properties) {
-                    if(object.properties[0].name == 'lock' && object.properties[0].lock) {
+                if (object.properties) {
+                    //if(object.properties[0].name == 'lock' && object.properties[0].value) {
                         let gate = this.physics.add.staticSprite(object.x + 32, object.y - 32, "gate");
-                        gate.lock = object.properties[0].lock;
+                        gate.lock = object.properties[0].value;
                         gate.setDepth(20);
                         gate.refreshBody();
                         this.gates.add(gate);
-                    }
+                    //}
                 }
             }
 
-            this.physics.add.collider(this.player, this.gates)
+            this.physics.add.collider(this.player, this.gates);
 
 
 
             
         }
     
+        activateLever() {
+            this.lever.on = true;
+            this.lever.setTexture('lever_right');
+            this.lever.setOffset(48, 8);
+
+            this.gates.getChildren().forEach(gate => {
+                gate.destroy();
+            });
+
+        }
+
         update(time, delta) {
             this.player.update(time, delta);
     

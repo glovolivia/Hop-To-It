@@ -7,10 +7,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 		this.setBounce(0);
 		this.setCollideWorldBounds(true);
 		this.setMaxVelocity(400, 800);
+        this.setOrigin(0.5, 1);
 
         this.jumping = false
         this.inWater = false;
         this.score = 0;
+        this.normalScale = 0.5;
+
 
         this.body.setGravityY(900);
         this.body.setAllowGravity(!this.inWater);
@@ -62,6 +65,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             speedX: { min: -5, max: 5 },
             scale: { start: 0.06, end: 0.02 },
             alpha: { start: 0.6, end: 0 },
+            quantity: 0.5,
             lifespan: 1200,
             tint: 0x8FB8C8,
             tintFill: true,
@@ -86,7 +90,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
     update(time, delta){
         //check if in water 
+        const wasInWater = this.inWater;
         this.inWater = this.waterLayer.hasTileAtWorldXY(this.body.center.x, this.body.center.y);
+
+        if(this.inWater && !wasInWater) {
+            this.scene.sound.play('splash', { volume: 0.8 });
+        }
 
         const right = this.cursor.right.isDown || this.right.isDown
         const left = this.cursor.left.isDown || this.left.isDown
@@ -107,6 +116,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
         if (this.chargeSound.isPlaying && (!this.jump.isDown || this.inWater || this.jumping)) {
             this.stopChargeSound();
+
         }
 
         if (!this.inWater){
@@ -128,6 +138,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                 if (onGround && this.jump.isDown){
                     this.jump_charge = Math.min(this.jump_charge + this.jump_charge_rate * dt, this.max_jump_strength)
                     this.updateChargeSound();
+
+                    if(!this.squash || !this.squash.isPlaying()) {
+                        this.squash = this.scene.tweens.add({
+                            targets: this,
+                            scaleX: 0.51,
+                            scaleY: 0.4,
+                            duration: (this.max_jump_strength / this.jump_charge_rate) * 1000,
+                            ease: 'Sine.easeIn',
+                        });
+
+                    }
+
                 }
                 if (onGround && Phaser.Input.Keyboard.JustUp(this.jump)){
                     this.scene.sound.play("jump_sfx")
@@ -147,6 +169,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                     const power = Math.max(this.jump_charge, this.min_jump_strength);
                     const facing = this.flipX ? 1 : -1;
 
+                    if (!this.reset || !this.reset.isPlaying()) {
+                        this.squash.stop();
+                        this.reset = this.scene.tweens.add({
+                            targets: this,
+                            scaleX: 0.5,
+                            scaleY: 0.5,
+                            duration: 180,
+                            ease: "Back.easeOut"
+                        });
+                    }
 
                     this.jumping = true;
                     this.setDrag(0, 0);
@@ -177,7 +209,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
         if (this.inWater){
             if (Math.random() > 0.004) {
-                this.bubbles.explode(1, this.x, this.y + 10);
+                this.bubbles.explode(1, this.x, this.y - 18);
             }
             this.body.setAllowGravity(false); // For game feel and to make swimming make sense
             this.setDrag(500,500);

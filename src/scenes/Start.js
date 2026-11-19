@@ -16,6 +16,7 @@ export class Start extends Phaser.Scene {
 
         this.load.audio('click', 'assets/Audio/click1.wav');
         this.load.audio('bgMusic', 'assets/Audio/flowerbed_fields.wav');
+        this.load.audio('splash', 'assets/Audio/cannon_miss.ogg');
 
         //Player images loaded here so they can be accessed from anywhere 
         this.load.image("player", 'assets/Graphics/frog_idle.png');

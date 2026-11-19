@@ -19,6 +19,7 @@ export class WyattLVL extends Phaser.Scene {
         this.load.image('fly', 'assets/Graphics/fly.png');
         this.load.image('portal', 'assets/Graphics/window.png');
         this.load.image("star4", "assets/Graphics/star4.png");
+        this.load.image('bubbles', 'assets/Graphics/circle_02.png');
     }
 
     create() {
